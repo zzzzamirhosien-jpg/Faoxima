@@ -167,6 +167,21 @@ try {
     $userGiftCodes = $st->fetchAll(PDO::FETCH_ASSOC);
 } catch (\Throwable $e) {  }
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$_csrf = $_SESSION['csrf_token'];
+
+$_has_action = isset($_GET['status']) || isset($_GET['priceadd']) ||
+               isset($_GET['pricelow']) || isset($_GET['agent']) ||
+               isset($_GET['textmessage']);
+if ($_has_action) {
+    $incoming_csrf = $_GET['_csrf'] ?? '';
+    if (!hash_equals($_SESSION['csrf_token'], $incoming_csrf)) {
+        http_response_code(403);
+        exit('درخواست نامعتبر — توکن CSRF اشتباه است');
+    }
+}
 
 if (isset($_GET['status']) and $_GET['status']) {
     if ($_GET['status'] == "block") {
@@ -264,24 +279,6 @@ if (isset($_GET['textmessage']) and $_GET['textmessage']) {
 $status_label   = ($user['User_Status'] == 'block') ? 'مسدود' : 'فعال';
 $status_class   = ($user['User_Status'] == 'block') ? 'badge-danger' : 'badge-success';
 $number_display = ($user['number'] == "none") ? 'ثبت نشده' : htmlspecialchars($user['number'], ENT_QUOTES, 'UTF-8');
-
-
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-$_csrf = $_SESSION['csrf_token'];
-
-
-$_has_action = isset($_GET['status']) || isset($_GET['priceadd']) ||
-               isset($_GET['pricelow']) || isset($_GET['agent']) ||
-               isset($_GET['textmessage']);
-if ($_has_action) {
-    $incoming_csrf = $_GET['_csrf'] ?? '';
-    if (!hash_equals($_SESSION['csrf_token'], $incoming_csrf)) {
-        http_response_code(403);
-        exit('درخواست نامعتبر — توکن CSRF اشتباه است');
-    }
-}
 
 
 $agent_types = [
