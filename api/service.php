@@ -14,7 +14,7 @@ $setting = select("setting", "*");
 
 $token = is_file('hash.txt') ? trim((string) file_get_contents('hash.txt')) : '';
 $headerToken = isset($headrs['Token']) ? (string) $headrs['Token'] : '';
-$validTokens = array_values(array_filter([$token, isset($APIKEY) ? (string) $APIKEY : ''], 'strlen'));
+$validTokens = array_values(array_filter([$token, isset($APIKEY) ? (string) $APIKEY : ''], function($v) { return $v !== ''; }));
 $tokenOk = false;
 if ($headerToken !== '') {
     foreach ($validTokens as $candidate) {

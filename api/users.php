@@ -58,7 +58,14 @@ function validateToken($headers)
     } else {
         $token = "";
     }
-    $validTokens = array_values(array_filter([$token, (string) ($APIKEY ?? '')], 'strlen'));
+
+    // Explicitly filter out empty strings while keeping '0'
+    $validTokens = array_values(array_filter([$token, (string) ($APIKEY ?? '')], function($v) { return $v !== ''; }));
+
+    if (empty($validTokens)) {
+        return false;
+    }
+
     foreach ($validTokens as $candidate) {
         if (hash_equals($candidate, $headerToken)) return true;
     }
