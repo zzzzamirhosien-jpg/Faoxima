@@ -39,17 +39,17 @@ register_shutdown_function(static function () {
     $err = error_get_last();
     $fatal = [E_ERROR, E_PARSE, E_COMPILE_ERROR, E_CORE_ERROR, E_USER_ERROR];
     if (is_array($err) && in_array($err['type'], $fatal, true)) {
+        error_log('PHP fatal error in verify.php: ' . $err['message'] . ' in ' . $err['file'] . ':' . $err['line']);
         __verify_emit(500, [
             'status' => false,
-            'msg'    => 'PHP fatal: ' . $err['message'],
-            'detail' => basename((string)$err['file']) . ':' . (int)$err['line'],
+            'msg'    => 'An internal server error occurred',
             'token'  => null,
         ]);
         return;
     }
     __verify_emit(500, [
         'status' => false,
-        'msg'    => 'verify.php finished without emitting a response',
+        'msg'    => 'An internal server error occurred',
         'token'  => null,
     ]);
 });
@@ -67,14 +67,14 @@ try {
 
     __verify_emit(500, [
         'status' => false,
-        'msg'    => 'VerifyHandler::run returned without responding',
+        'msg'    => 'An internal server error occurred',
         'token'  => null,
     ]);
 } catch (Throwable $e) {
+    error_log('Exception in verify.php: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     __verify_emit(500, [
         'status' => false,
-        'msg'    => 'verify.php exception: ' . $e->getMessage(),
-        'detail' => basename($e->getFile()) . ':' . $e->getLine(),
+        'msg'    => 'An internal server error occurred',
         'token'  => null,
     ]);
 }
