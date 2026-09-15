@@ -52,13 +52,19 @@ function validateToken($headers)
     if (!isset($headers['Token'])) {
         return false;
     }
+
+    $headerToken = (string) $headers['Token'];
+    if ($headerToken === '') return false;
     if (is_file('hash.txt')) {
-        $token = file_get_contents('hash.txt');
+        $token = trim((string) file_get_contents('hash.txt'));
     } else {
         $token = "";
     }
-    $validTokens = [$token, $APIKEY];
-    return in_array($headers['Token'], $validTokens, true);
+    $validTokens = array_values(array_filter([$token, (string) ($APIKEY ?? '')], 'strlen'));
+    foreach ($validTokens as $candidate) {
+        if (hash_equals($candidate, $headerToken)) return true;
+    }
+    return false;
 }
 
 $headers = getallheaders();
