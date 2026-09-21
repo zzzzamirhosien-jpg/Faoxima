@@ -60,6 +60,15 @@ final class FaoximaAuth
             throw new RuntimeException('User verification failed');
         }
 
+        if (isset($initData['auth_date'])) {
+            $authDate = (int)$initData['auth_date'];
+            if ($authDate <= 0 || (time() - $authDate) > 86400) {
+                throw new RuntimeException('Telegram init data has expired');
+            }
+        } else {
+            throw new RuntimeException('Telegram init data is missing auth_date');
+        }
+
         $userRaw = $initData['user'] ?? null;
         if (is_string($userRaw)) {
             $userData = json_decode($userRaw, true);
