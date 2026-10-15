@@ -1578,12 +1578,12 @@ https://t.me/$usernamebot?start={$user['codeInvitation']}";
     $eextraprice = json_decode($marzban_list_get['pricecustomtime'], true);
     $customtimevalueprice = $eextraprice[$user['agent']];
     $parts = explode("_", $loc);
-    if ($parts[0] == "customvolume") {
-        $info_product['Volume_constraint'] = $parts[2];
+    if (($parts[0] ?? '') === "customvolume") {
+        $info_product['Volume_constraint'] = $parts[2] ?? 0;
         $info_product['name_product'] = $textbotlang['users']['customsellvolume']['title'];
         $info_product['code_product'] = $textbotlang['users']['customsellvolume']['title'];
-        $info_product['Service_time'] = $parts[1];
-        $info_product['price_product'] = ($parts[2] * $custompricevalue) + ($parts[1] * $customtimevalueprice);
+        $info_product['Service_time'] = $parts[1] ?? 0;
+        $info_product['price_product'] = (($parts[2] ?? 0) * $custompricevalue) + (($parts[1] ?? 0) * $customtimevalueprice);
     } else {
         if (function_exists('rxResolveProductForPanel')) {
             $info_product = rxResolveProductForPanel($loc, $userdate['name_panel'], $user['agent'], $userdate['category'] ?? null, $userdate['monthproduct'] ?? null);
@@ -1676,9 +1676,9 @@ https://t.me/$usernamebot?start={$user['codeInvitation']}";
     }
     Editmessagetext($from_id, $message_id, $text_inline, json_encode(['inline_keyboard' => []]));
 
-    $parts = explode("_", $user['Processing_value_one']);
+    $parts = explode("_", (string)$user['Processing_value_one']);
 
-    $partsdic = explode("_", $user['Processing_value_four']);
+    $partsdic = explode("_", (string)$user['Processing_value_four']);
     $marzban_list_get = select("marzban_panel", "*", "name_panel", $userdate['name_panel'], "select");
     if (!is_array($marzban_list_get)) {
         sendmessage($from_id, $datatextbot['dyn_errors_panel_not_found'] ?? "❌ پنل انتخاب‌شده یافت نشد؛ لطفا مراحل خرید را مجددا انجام دهید.", $keyboard, 'HTML');
@@ -1694,12 +1694,12 @@ https://t.me/$usernamebot?start={$user['codeInvitation']}";
     $custompricevalue = $eextraprice[$user['agent']];
     $eextraprice = json_decode($marzban_list_get['pricecustomtime'], true);
     $customtimevalueprice = $eextraprice[$user['agent']];
-    if ($parts[0] == "customvolume") {
-        $info_product['Volume_constraint'] = $parts[2];
+    if (($parts[0] ?? '') === "customvolume") {
+        $info_product['Volume_constraint'] = $parts[2] ?? 0;
         $info_product['name_product'] = $textbotlang['users']['customsellvolume']['title'];
         $info_product['code_product'] = "customvolume";
-        $info_product['Service_time'] = $parts[1];
-        $info_product['price_product'] = ($parts[2] * $custompricevalue) + ($parts[1] * $customtimevalueprice);
+        $info_product['Service_time'] = $parts[1] ?? 0;
+        $info_product['price_product'] = (($parts[2] ?? 0) * $custompricevalue) + (($parts[1] ?? 0) * $customtimevalueprice);
         $info_product['data_limit_reset'] = "no_reset";
     } else {
         if (function_exists('rxResolveProductForPanel')) {
@@ -2124,17 +2124,17 @@ $textonebuy
     $__dlabel = $__dv['label'];
     sendmessage($from_id, "🤩 کد تخفیف شما درست بود و تخفیف {$__dlabel} روی فاکتور شما اعمال شد.", null, 'HTML');
     step('payment', $from_id);
-    $parts = explode("_", $user['Processing_value_one']);
+    $parts = explode("_", (string)$user['Processing_value_one']);
     $eextraprice = json_decode($marzban_list_get['pricecustomvolume'], true);
     $custompricevalue = $eextraprice[$user['agent']];
     $eextraprice = json_decode($marzban_list_get['pricecustomtime'], true);
     $customtimevalueprice = $eextraprice[$user['agent']];
-    if ($parts[0] == "customvolume") {
-        $info_product['Volume_constraint'] = $parts[2];
+    if (($parts[0] ?? '') === "customvolume") {
+        $info_product['Volume_constraint'] = $parts[2] ?? 0;
         $info_product['name_product'] = $textbotlang['users']['customsellvolume']['title'];
         $info_product['code_product'] = $textbotlang['users']['customsellvolume']['title'];
-        $info_product['Service_time'] = $parts[1];
-        $info_product['price_product'] = ($parts[2] * $custompricevalue) + ($parts[1] * $customtimevalueprice);
+        $info_product['Service_time'] = $parts[1] ?? 0;
+        $info_product['price_product'] = (($parts[2] ?? 0) * $custompricevalue) + (($parts[1] ?? 0) * $customtimevalueprice);
     } else {
         if (function_exists('rxResolveProductForPanel')) {
             $info_product = rxResolveProductForPanel($user['Processing_value_one'], $userdate['name_panel'], $user['agent'], $userdate['category'] ?? null, $userdate['monthproduct'] ?? null);
@@ -2374,12 +2374,12 @@ $textonebuy
     $eextraprice = json_decode($marzban_list_get['pricecustomtime'], true);
     $customtimevalueprice = $eextraprice[$user['agent']];
     $parts = explode("_", $loc);
-    if ($parts[0] == "customvolume") {
-        $info_product['Volume_constraint'] = $parts[2];
+    if (($parts[0] ?? '') === "customvolume") {
+        $info_product['Volume_constraint'] = $parts[2] ?? 0;
         $info_product['name_product'] = $textbotlang['users']['customsellvolume']['title'];
         $info_product['code_product'] = $textbotlang['users']['customsellvolume']['title'];
-        $info_product['Service_time'] = $parts[1];
-        $info_product['price_product'] = ($parts[2] * $custompricevalue) + ($parts[1] * $customtimevalueprice);
+        $info_product['Service_time'] = $parts[1] ?? 0;
+        $info_product['price_product'] = (($parts[2] ?? 0) * $custompricevalue) + (($parts[1] ?? 0) * $customtimevalueprice);
     } else {
         if (function_exists('rxResolveProductForPanel')) {
             $info_product = rxResolveProductForPanel($loc, $user['Processing_value'], $user['agent']);
@@ -2430,13 +2430,13 @@ $textonebuy
     $custompricevalue = $eextraprice[$user['agent']];
     $eextraprice = json_decode($marzban_list_get['pricecustomtime'], true);
     $customtimevalueprice = $eextraprice[$user['agent']];
-    $parts = explode("_", $user['Processing_value_one']);
-    if ($parts[0] == "customvolume") {
-        $info_product['Volume_constraint'] = $parts[2];
+    $parts = explode("_", (string)$user['Processing_value_one']);
+    if (($parts[0] ?? '') === "customvolume") {
+        $info_product['Volume_constraint'] = $parts[2] ?? 0;
         $info_product['name_product'] = $textbotlang['users']['customsellvolume']['title'];
         $info_product['code_product'] = "customvolume";
-        $info_product['Service_time'] = $parts[1];
-        $info_product['price_product'] = ($parts[2] * $custompricevalue) + ($parts[1] * $customtimevalueprice);
+        $info_product['Service_time'] = $parts[1] ?? 0;
+        $info_product['price_product'] = (($parts[2] ?? 0) * $custompricevalue) + (($parts[1] ?? 0) * $customtimevalueprice);
         $info_product['data_limit_reset'] = "no_reset";
     } else {
         if (function_exists('rxResolveProductForPanel')) {
